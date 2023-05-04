@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Artists</title>
+</head>
+<body>
+
+<h1>Artists</h1>
+
+<table>
+  <tbody>
+  <tr th:each="artist: ${artists}">
+     <td th:text="${artist.name}" />
+     <td th:text="${artist.genre}" />
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
