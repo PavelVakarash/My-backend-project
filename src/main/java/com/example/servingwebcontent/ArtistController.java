@@ -2,9 +2,7 @@ package com.example.servingwebcontent;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,7 @@ class Artist {
     }
 }
 
-@Controller
+@RestController
 public class ArtistController {
 
     static final ArrayList<Artist> artists = new ArrayList<Artist>() {{
@@ -46,17 +44,40 @@ public class ArtistController {
             add(new Artist("Enya", "New Age"));
     }};
 
-    @RequestMapping(value = "/artists", method = RequestMethod.GET)
+    @GetMapping(value = "/artists")
 
-    public String listArtistsChange(@RequestParam(name = "genre", required = false, defaultValue = "all") String genre, Model model) {
+    public List<Artist> listArtists(@RequestParam(name = "genre", required = false, defaultValue = "all") String genre, Model model) {
             List<Artist> result = artists;
 
             if (!genre.equals("all")) {
                 result = artists.stream().filter(a -> a.getGenre().equalsIgnoreCase(genre)).collect(Collectors.toList());
             }
 
-            model.addAttribute("artists", result);
-            return "artistsview";
+            return result;
+    }
+
+    @GetMapping(value = "/artists/{artistId}")
+    public Artist getArtist(@PathVariable int artistId)
+    {
+        Artist artist = artists.get(artistId);
+        return artist;
+    }
+
+    // Delete
+    @DeleteMapping(value = "/artists/{artistId}")
+    public Artist deleteArtist(@PathVariable int artistId)
+    {
+        Artist artist = artists.get(artistId);
+        return artist;
+    }
+
+    // Update
+    @PutMapping(value = "/artists/{artistId}")
+    public Artist updateArtist(@PathVariable int artistId, @RequestBody Artist newArtist)
+    {
+        Artist artist = artists.get(artistId);
+        artist = newArtist;
+        return artist;
     }
 }
 
