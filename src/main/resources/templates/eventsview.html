@@ -10,9 +10,9 @@
 
 <table>
     <tbody>
-    <tr th:each="event: ${events}">
-        <td th:text="${event.name}" />
-        <td th:text="${event.city}" />
+    <tr th:each="eventDTO: ${events}">
+        <td th:text="${eventDTO.name}" />
+        <td th:text="${eventDTO.city}" />
     </tr>
     </tbody>
 </table>

@@ -10,9 +10,9 @@
 
 <table>
   <tbody>
-  <tr th:each="artist: ${artists}">
-     <td th:text="${artist.name}" />
-     <td th:text="${artist.genre}" />
+  <tr th:each="artistDTO: ${artists}">
+     <td th:text="${artistDTO.name}" />
+     <td th:text="${artistDTO.genre}" />
   </tr>
   </tbody>
 </table>

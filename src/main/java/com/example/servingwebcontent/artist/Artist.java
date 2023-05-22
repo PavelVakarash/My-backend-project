@@ -1,20 +1,22 @@
 package com.example.servingwebcontent.artist;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
+@Entity
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@ToString
-class Artist {
-
-    @Schema(description = "Name of the artist")
+public class Artist {
+    @GeneratedValue
+    @Id
+    private int id;
     private String name;
-    @Schema(description = "Genre of the artist")
     private String genre;
-
 }

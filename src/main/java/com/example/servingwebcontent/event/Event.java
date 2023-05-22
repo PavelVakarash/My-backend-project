@@ -1,27 +1,22 @@
 package com.example.servingwebcontent.event;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Entity
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
-class Event {
-//    public Event(String name, String city) {
-//        this.name = name;
-//        this.city = city;
-//    }
-
-    @Schema(description = "Name of the event")
+@Setter
+public class Event {
+    @GeneratedValue
+    @Id
+    private int id;
     private String name;
-    @Schema(description = "Location of the event")
     private String city;
-
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public String getCity() {
-//        return city;
-//    }
 }

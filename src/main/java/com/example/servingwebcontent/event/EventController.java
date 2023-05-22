@@ -1,132 +1,83 @@
 package com.example.servingwebcontent.event;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Schema;
-
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-//@Controller
 @RestController
-@RequestMapping("events")
+@RequestMapping("EVENT_DTOS")
 public class EventController {
 
-    static final ArrayList<Event> events = new ArrayList<Event>(){{
-        add(new Event("Opera", "London"));
-        add(new Event("Violin concert", "Prague"));
-        add(new Event("Jazz concert", "Berlin"));
-        add(new Event("Art exhibition", "London"));
-    }};
-    //@RequestMapping(value = "/events", method = RequestMethod.GET)
-    //@GetMapping(value = "/events")
+    private EventService service;
+
+    @Autowired
+    public void setService(EventService service) {
+        this.service = service;
+    }
+
     @GetMapping(value = "")
 
-    @Operation(summary = "Get all events", description = "A list of all events available in the system. " +
-            "Is possible to filter events by city. " +
+    @Operation(summary = "Get all EVENT_DTOS", description = "A list of all EVENT_DTOS available in the system. " +
+            "Is possible to filter EVENT_DTOS by city. " +
             "The response includes the event name and city.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully operation"),
             @ApiResponse(responseCode = "400", description = "Invalid city parameter provided")
     })
-    public List<Event> listEvents(@RequestParam(name = "city", required = false, defaultValue = "all") String city, Model model)
+    public List<EventDTO> listEvents(@RequestParam(name = "city", required = false, defaultValue = "all") String city, Model model)
     {
-        List<Event> result = events;
-
-        if (!city.equals("all")) {
-            result = events.stream().filter(e -> e.getCity().equals(city)).collect(Collectors.toList());
-        }
-     return result;
+        return service.getEvents(city);
     }
 
-    //@GetMapping(value = "/events/{eventId}")
     @GetMapping(value = "/{eventId}")
     //@ResponseBody
     @Operation(summary = "Get event", description = " Details of a specific event identified by eventId.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully operation"),
-            @ApiResponse(responseCode = "404", description = "Event not found")
+            @ApiResponse(responseCode = "404", description = "EventDTO not found")
     })
-    public Event getEvent(@PathVariable int eventId)
+    public EventDTO getEvent(@PathVariable int id)
     {
-        Event event = events.get(eventId);
-        return event;
+        return service.getEvent(id);
     }
 
-    // Delete
-    //@RequestMapping(value = "/events/{eventId}", method = RequestMethod.DELETE)
-    //@DeleteMapping(value = "/events/{eventId}")
     @DeleteMapping(value = "/{eventId}")
     @Operation(summary = "Delete event", description = "Delete specific event identified by eventId.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Event successfully deleted"),
-            @ApiResponse(responseCode = "404", description = "Event not found")
+            @ApiResponse(responseCode = "200", description = "EventDTO successfully deleted"),
+            @ApiResponse(responseCode = "404", description = "EventDTO not found")
     })
-    public Event deleteEvent(@PathVariable int eventId)
+    public EventDTO deleteEvent(@PathVariable int id)
     {
         // TODO: Add real remove
-        Event event = events.get(eventId);
-        return event;
+        return service.deleteEvent(id);
     }
 
-    // Update
-    //@PutMapping(value = "/events/{eventId}")
     @PutMapping(value = "/{eventId}")
-    @Operation(summary = "Update event", description = "Update the details of a specific event identified by eventId.")
+    @Operation(summary = "Update eventDTO", description = "Update the details of a specific eventDTO identified by eventId.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Event successfully updated"),
-            @ApiResponse(responseCode = "404", description = "Event not found")
+            @ApiResponse(responseCode = "200", description = "EventDTO successfully updated"),
+            @ApiResponse(responseCode = "404", description = "EventDTO not found")
     })
-    public Event updateEvent(@PathVariable int eventId, @RequestBody Event newEvent)
+    public EventDTO updateEvent(@PathVariable int id, @RequestBody EventDTO eventDTO)
     {
-        Event event = events.get(eventId);
-        // TODO: update event in database
-        event = newEvent; // useless. just for example
-        return event;
+        // TODO: update eventDTO in database
+        return service.updateEvent(id, eventDTO);
     }
-    //@PostMapping(value = "/events")
+
     @PostMapping(value = "")
-    @Operation(summary = "Create new event", description = "Creates a new event with the provided details.")
+    @Operation(summary = "Create new eventDTO", description = "Creates a new eventDTO with the provided details.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "New Event successfully created"),
-            @ApiResponse(responseCode = "400", description = "Invalid event details provided")
+            @ApiResponse(responseCode = "200", description = "New EventDTO successfully created"),
+            @ApiResponse(responseCode = "400", description = "Invalid eventDTO details provided")
     })
-    public Event createEvent(@RequestBody Event event)
+    public EventDTO createEvent(@RequestBody EventDTO eventDTO)
     {
         // TODO save to database
-        return event;
+        return service.createEvent(eventDTO);
     }
-
-//      @RequestMapping(value = "/events", method = RequestMethod.GET)
-//    // @GetMapping(value = "/events")
-//
-//    // http://localhost:8080/events?city=Berlin
-//    // http://localhost:8080/events
-//    public String listEventsChangeName(@RequestParam(name = "city", required = false, defaultValue = "all") String city, Model model)
-//    {
-//        List<Event> result = events;
-//
-//        if (!city.equals("all")) {
-//            result = events.stream().filter(e -> e.getCity().equals(city)).collect(Collectors.toList());
-//        }
-//
-//        model.addAttribute("events", result);
-//        /**
-//         if (city.equals("all")) {
-//         model.addAttribute("events", events);
-//         } else {
-//         // Filter list by city name
-//         List<Event> cityEvents = events.stream().filter(e -> e.getCity().equals(city)).collect(Collectors.toList());
-//         model.addAttribute("events", cityEvents); // Pass data to view
-//         }
-//         **/
-//        return "eventsview"; // Return name of view
-//    }
 }
