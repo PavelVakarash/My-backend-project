@@ -58,7 +58,7 @@ public class EventController {
     }
 
     @PutMapping(value = "/{eventId}")
-    @Operation(summary = "Update eventDTO", description = "Update the details of a specific eventDTO identified by eventId.")
+    @Operation(summary = "Update event", description = "Update the details of a specific eventDTO identified by eventId.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "EventDTO successfully updated"),
             @ApiResponse(responseCode = "404", description = "EventDTO not found")

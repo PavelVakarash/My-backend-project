@@ -1,13 +1,20 @@
 package com.example.servingwebcontent.event;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class EventService {
+
+    private EventRepository eventRepository;
+
+    @Autowired
+    public void setEventRepository(EventRepository eventRepository) {
+        this.eventRepository = eventRepository;
+    }
 
     static final ArrayList<EventDTO> EVENT_DTOS = new ArrayList<EventDTO>() {{
         add(new EventDTO("Opera", "London"));
@@ -16,14 +23,17 @@ public class EventService {
         add(new EventDTO("Art exhibition", "London"));
     }};
 
-    public List<EventDTO> getEvents(String cityFilter) {
-        List<EventDTO> result = EVENT_DTOS;
-
-        if (!cityFilter.equals("all")) {
-            result = EVENT_DTOS.stream().filter(e -> e.getCity().equals(cityFilter)).collect(Collectors.toList());
+        public List<EventDTO> getEvents(String cityFilter)
+        {
+            Iterable<Event> allEvents = eventRepository.findAll();
+            List<EventDTO> result = new ArrayList<EventDTO>();
+            for (Event event : allEvents)
+            {
+                EventDTO eventDTO = new EventDTO(event.getName(), event.getCity());
+                result.add(eventDTO);
+            }
+            return result;
         }
-        return result;
-    }
 
     public EventDTO getEvent(int id)
     {
@@ -47,7 +57,14 @@ public class EventService {
 
     public EventDTO createEvent(EventDTO eventDTO)
     {
-        // TODO save to database
+        String name = eventDTO.getName();
+        String city = eventDTO.getCity();
+
+        Event event = new Event();
+        event.setName(name);
+        event.setCity(city);
+        // TODO: save to database
+        eventRepository.save(event);
         return eventDTO;
     }
 }

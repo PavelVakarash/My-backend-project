@@ -1,13 +1,20 @@
 package com.example.servingwebcontent.artist;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ArtistService {
+
+    private ArtistRepository artistRepository;
+
+    @Autowired
+    public void setArtistRepository(ArtistRepository artistRepository) {
+        this.artistRepository = artistRepository;
+    }
 
     static final ArrayList<ArtistDTO> ARTIST_DTOS = new ArrayList<ArtistDTO>() {{
         add(new ArtistDTO("Nazareth", "Rock"));
@@ -24,11 +31,14 @@ public class ArtistService {
         add(new ArtistDTO("Enya", "New Age"));
     }};
 
-    public List<ArtistDTO> getArtists(String genreFilter) {
-        List<ArtistDTO> result = ARTIST_DTOS;
-
-        if (!genreFilter.equals("all")) {
-            result = ARTIST_DTOS.stream().filter(e -> e.getGenre().equals(genreFilter)).collect(Collectors.toList());
+    public List<ArtistDTO> getArtists(String genreFilter)
+    {
+        Iterable<Artist> allArtists = artistRepository.findAll();
+        List<ArtistDTO> result = new ArrayList<ArtistDTO>();
+        for (Artist artist : allArtists)
+        {
+            ArtistDTO artistDTO = new ArtistDTO(artist.getName(), artist.getGenre());
+            result.add(artistDTO);
         }
         return result;
     }
@@ -55,7 +65,14 @@ public class ArtistService {
 
     public ArtistDTO createArtist(ArtistDTO artistDTO)
     {
+        String name = artistDTO.getName();
+        String genre = artistDTO.getGenre();
+
+        Artist artist = new Artist();
+        artist.setName(name);
+        artist.setGenre(genre);
         // TODO save to database
+        artistRepository.save(artist);
         return artistDTO;
     }
 }
