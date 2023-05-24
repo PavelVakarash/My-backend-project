@@ -33,7 +33,7 @@ public class ArtistController {
         return service.getArtists(genre);
     }
 
-    @GetMapping(value = "/{artistId}")
+    @GetMapping(value = "/{id}")
     @Operation(summary = "Get artist", description = "Details of a specific artist identified by artistId.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully operation"),
@@ -45,29 +45,29 @@ public class ArtistController {
     }
 
     // Delete
-    @DeleteMapping(value = "/{artistId}")
+    @DeleteMapping(value = "/{id}")
     @Operation(summary = "Delete artist", description = "Delete specific artist identified by artistId.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ArtistDTO successfully deleted"),
             @ApiResponse(responseCode = "404", description = "ArtistDTO not found")
     })
-    public ArtistDTO deleteArtist(@PathVariable int id)
+    public void deleteArtist(@PathVariable int id)
     {
         // TODO: Add real remove
-        return service.deleteArtist(id);
+        service.deleteArtist(id);
     }
 
     // Update
-    @PutMapping(value = "/{artistId}")
+    @PutMapping(value = "/{id}")
     @Operation(summary = "Update artist", description = "Update the details of a specific artist identified by artistId.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ArtistDTO successfully updated"),
             @ApiResponse(responseCode = "404", description = "ArtistDTO not found")
     })
-    public ArtistDTO updateArtist(@PathVariable int id, @RequestBody ArtistDTO artistDTO)
+    public void updateArtist(@PathVariable int id, @RequestBody ArtistDTO artistDTO)
     {
         // TODO: update eventDTO in database
-        return service.updateArtist(id, artistDTO);
+        service.updateArtist(id, artistDTO);
     }
 
     @PostMapping(value = "")
@@ -76,9 +76,9 @@ public class ArtistController {
             @ApiResponse(responseCode = "200", description = "New ArtistDTO successfully created"),
             @ApiResponse(responseCode = "400", description = "Invalid artistDTO details provided")
     })
-    public ArtistDTO createArtist(@RequestBody ArtistDTO artistDTO) {
+    public void createArtist(@RequestBody ArtistDTO artistDTO) {
         // TODO save to database
-        return service.createArtist(artistDTO);
+        service.createArtist(artistDTO);
     }
 }
 

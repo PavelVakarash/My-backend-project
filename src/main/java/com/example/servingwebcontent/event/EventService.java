@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EventService {
@@ -35,27 +36,31 @@ public class EventService {
             return result;
         }
 
-    public EventDTO getEvent(int id)
-    {
-        EventDTO eventDTO = EVENT_DTOS.get(id);
+    public EventDTO getEvent(int id) {
+        Optional<Event> eventOptional = eventRepository.findById(id);
+        Event event = eventOptional.get();
+        EventDTO eventDTO = new EventDTO(event.getName(), event.getCity());
         return eventDTO;
-    }
+        }
 
-    public EventDTO deleteEvent(int id)
+    public void deleteEvent(int id)
     {
-        EventDTO eventDTO = EVENT_DTOS.get(id);
+        eventRepository.deleteById(id);
         // TODO: remove it from the database
-        return eventDTO;
     }
 
-    public EventDTO updateEvent(int id, EventDTO eventDTO)
+    public void updateEvent(int id, EventDTO eventDTO)
     {
-        EventDTO origEventDTO = EVENT_DTOS.get(id);
+        Event event = eventRepository.findById(id).get();
+
+        event.setName(eventDTO.getName());
+        event.setCity(eventDTO.getCity());
+
+        eventRepository.save(event);
         // TODO: update eventDTO in the database
-        return eventDTO;
     }
 
-    public EventDTO createEvent(EventDTO eventDTO)
+    public void createEvent(EventDTO eventDTO)
     {
         String name = eventDTO.getName();
         String city = eventDTO.getCity();
@@ -65,6 +70,5 @@ public class EventService {
         event.setCity(city);
         // TODO: save to database
         eventRepository.save(event);
-        return eventDTO;
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ArtistService {
@@ -45,25 +46,29 @@ public class ArtistService {
 
     public ArtistDTO getArtist(int id)
     {
-        ArtistDTO artistDTO = ARTIST_DTOS.get(id);
+        Optional<Artist> artistOptional = artistRepository.findById(id);
+        Artist artist = artistOptional.get();
+        ArtistDTO artistDTO = new ArtistDTO(artist.getName(),artist.getGenre());
         return artistDTO;
     }
 
-    public ArtistDTO deleteArtist(int id)
+    public void deleteArtist(int id)
     {
-        ArtistDTO artistDTO = ARTIST_DTOS.get(id);
+        artistRepository.deleteById(id);
         // TODO: remove it from the database
-        return artistDTO;
     }
 
-    public ArtistDTO updateArtist(int id, ArtistDTO artistDTO)
+    public void updateArtist(int id, ArtistDTO artistDTO)
     {
-        ArtistDTO origArtistDTO = ARTIST_DTOS.get(id);
+        Artist artist = artistRepository.findById(id).get();
+        artist.setName(artistDTO.getName());
+        artist.setGenre(artistDTO.getGenre());
+        artistRepository.save(artist);
         // TODO: update artistDTO in the database
-        return artistDTO;
+
     }
 
-    public ArtistDTO createArtist(ArtistDTO artistDTO)
+    public void createArtist(ArtistDTO artistDTO)
     {
         String name = artistDTO.getName();
         String genre = artistDTO.getGenre();
@@ -71,8 +76,7 @@ public class ArtistService {
         Artist artist = new Artist();
         artist.setName(name);
         artist.setGenre(genre);
-        // TODO save to database
+        // TODO: save to database
         artistRepository.save(artist);
-        return artistDTO;
     }
 }

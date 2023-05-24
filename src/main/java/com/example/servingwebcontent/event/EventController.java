@@ -33,7 +33,7 @@ public class EventController {
         return service.getEvents(city);
     }
 
-    @GetMapping(value = "/{eventId}")
+    @GetMapping(value = "/{id}")
     //@ResponseBody
     @Operation(summary = "Get event", description = " Details of a specific event identified by eventId.")
     @ApiResponses(value = {
@@ -45,28 +45,28 @@ public class EventController {
         return service.getEvent(id);
     }
 
-    @DeleteMapping(value = "/{eventId}")
+    @DeleteMapping(value = "/{id}")
     @Operation(summary = "Delete event", description = "Delete specific event identified by eventId.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "EventDTO successfully deleted"),
             @ApiResponse(responseCode = "404", description = "EventDTO not found")
     })
-    public EventDTO deleteEvent(@PathVariable int id)
+    public void deleteEvent(@PathVariable int id)
     {
+        service.deleteEvent(id);
         // TODO: Add real remove
-        return service.deleteEvent(id);
     }
 
-    @PutMapping(value = "/{eventId}")
+    @PutMapping(value = "/{id}")
     @Operation(summary = "Update event", description = "Update the details of a specific eventDTO identified by eventId.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "EventDTO successfully updated"),
             @ApiResponse(responseCode = "404", description = "EventDTO not found")
     })
-    public EventDTO updateEvent(@PathVariable int id, @RequestBody EventDTO eventDTO)
+    public void updateEvent(@PathVariable int id, @RequestBody EventDTO eventDTO)
     {
         // TODO: update eventDTO in database
-        return service.updateEvent(id, eventDTO);
+        service.updateEvent(id, eventDTO);
     }
 
     @PostMapping(value = "")
@@ -75,9 +75,9 @@ public class EventController {
             @ApiResponse(responseCode = "200", description = "New EventDTO successfully created"),
             @ApiResponse(responseCode = "400", description = "Invalid eventDTO details provided")
     })
-    public EventDTO createEvent(@RequestBody EventDTO eventDTO)
+    public void createEvent(@RequestBody EventDTO eventDTO)
     {
         // TODO save to database
-        return service.createEvent(eventDTO);
+        service.createEvent(eventDTO);
     }
 }
