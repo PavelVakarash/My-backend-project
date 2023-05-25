@@ -1,14 +1,16 @@
 package com.example.servingwebcontent.artist;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ArtistService {
+
+    private static final ModelMapper modelMapper = new ModelMapper();
 
     private ArtistRepository artistRepository;
 
@@ -46,10 +48,8 @@ public class ArtistService {
 
     public ArtistDTO getArtist(int id)
     {
-        Optional<Artist> artistOptional = artistRepository.findById(id);
-        Artist artist = artistOptional.get();
-        ArtistDTO artistDTO = new ArtistDTO(artist.getName(),artist.getGenre());
-        return artistDTO;
+      Artist artist = artistRepository.findById(id).get();
+      return modelMapper.map(artist, ArtistDTO.class);
     }
 
     public void deleteArtist(int id)
@@ -70,12 +70,7 @@ public class ArtistService {
 
     public void createArtist(ArtistDTO artistDTO)
     {
-        String name = artistDTO.getName();
-        String genre = artistDTO.getGenre();
-
-        Artist artist = new Artist();
-        artist.setName(name);
-        artist.setGenre(genre);
+        Artist artist = modelMapper.map(artistDTO, Artist.class);
         // TODO: save to database
         artistRepository.save(artist);
     }
