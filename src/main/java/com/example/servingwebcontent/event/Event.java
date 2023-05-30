@@ -1,13 +1,7 @@
 package com.example.servingwebcontent.event;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "event")
@@ -16,9 +10,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Event {
-    @GeneratedValue
+    //@GeneratedValue // Create ID automatically
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+
     private int id;
+
+    @NonNull
     private String name;
+
+    @NonNull
     private String city;
 }

@@ -68,10 +68,11 @@ public class ArtistService {
 
     }
 
-    public void createArtist(ArtistDTO artistDTO)
+    public int createArtist(ArtistDTO artistDTO)
     {
         Artist artist = modelMapper.map(artistDTO, Artist.class);
         // TODO: save to database
-        artistRepository.save(artist);
+        Artist saved = artistRepository.save(artist);
+        return saved.getId();
     }
 }
