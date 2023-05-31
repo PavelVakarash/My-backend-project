@@ -76,10 +76,9 @@ public class ArtistController {
             @ApiResponse(responseCode = "200", description = "New ArtistDTO successfully created"),
             @ApiResponse(responseCode = "400", description = "Invalid artistDTO details provided")
     })
-    public int createArtist(@RequestBody ArtistDTO artistDTO) {
+    public int createArtist(@RequestBody NewArtistDTO newArtistDTO) {
         // TODO save to database
-        int id = service.createArtist(artistDTO);
-        return id;
+        return service.createArtist(newArtistDTO);
     }
 }
 

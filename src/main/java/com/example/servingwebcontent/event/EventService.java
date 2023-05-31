@@ -1,5 +1,7 @@
 package com.example.servingwebcontent.event;
 
+import com.example.servingwebcontent.place.Place;
+import com.example.servingwebcontent.place.PlaceRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,12 @@ public class EventService {
 
 
     private EventRepository eventRepository;
+    private PlaceRepository placeRepository;
+
+    @Autowired
+    public void setPlaceRepository(PlaceRepository placeRepository) {
+        this.placeRepository = placeRepository;
+    }
 
     @Autowired
     public void setEventRepository(EventRepository eventRepository) {
@@ -33,7 +41,7 @@ public class EventService {
             List<EventDTO> result = new ArrayList<EventDTO>();
             for (Event event : allEvents)
             {
-                EventDTO eventDTO = new EventDTO(event.getName(), event.getCity());
+                EventDTO eventDTO = new EventDTO(event.getName(), event.getPlace().getCity());
                 result.add(eventDTO);
             }
             return result;
@@ -56,16 +64,20 @@ public class EventService {
         Event event = eventRepository.findById(id).get();
 
         event.setName(eventDTO.getName());
-        event.setCity(eventDTO.getCity());
+        event.getPlace().setCity(eventDTO.getCity());
 
         eventRepository.save(event);
         // TODO: update eventDTO in the database
     }
 
-    public void createEvent(EventDTO eventDTO)
+    public int createEvent(NewEventDTO newEventDTO)
     {
-        Event event = modelMapper.map(eventDTO, Event.class);
         // TODO: save to database
-        eventRepository.save(event);
+        int placeId = newEventDTO.getPlaceId();
+        Place place = placeRepository.findById(placeId).get();
+        Event event = new Event();
+        event.setName(newEventDTO.getName());
+        event.setPlace(place);
+        return eventRepository.save(event).getId();
     }
 }

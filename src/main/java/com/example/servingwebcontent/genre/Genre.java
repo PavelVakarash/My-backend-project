@@ -1,11 +1,17 @@
 package com.example.servingwebcontent.genre;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.NonNull;
+import com.example.servingwebcontent.artist.Artist;
+import com.example.servingwebcontent.event.Event;
+import jakarta.persistence.*;
+import lombok.*;
 
+import java.util.List;
+
+@Table(name = "genre")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 public class Genre {
 
@@ -15,4 +21,7 @@ public class Genre {
 
     @NonNull
     private String name;
+
+    @OneToMany(mappedBy = "genre")
+    private List<Artist> artists;
 }

@@ -75,9 +75,9 @@ public class EventController {
             @ApiResponse(responseCode = "200", description = "New EventDTO successfully created"),
             @ApiResponse(responseCode = "400", description = "Invalid eventDTO details provided")
     })
-    public void createEvent(@RequestBody EventDTO eventDTO)
+    public int createEvent(@RequestBody NewEventDTO newEventDTO)
     {
         // TODO save to database
-        service.createEvent(eventDTO);
+       return service.createEvent(newEventDTO);
     }
 }

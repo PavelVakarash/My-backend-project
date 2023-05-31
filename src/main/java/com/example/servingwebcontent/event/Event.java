@@ -1,5 +1,6 @@
 package com.example.servingwebcontent.event;
 
+import com.example.servingwebcontent.place.Place;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,12 +14,14 @@ public class Event {
     //@GeneratedValue // Create ID automatically
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-
     private int id;
 
     @NonNull
     private String name;
 
-    @NonNull
-    private String city;
+//    @NonNull
+//    private String city; // TODO: replace to place
+
+    @ManyToOne  // Owner
+    private Place place; // place_id -> place.id
 }

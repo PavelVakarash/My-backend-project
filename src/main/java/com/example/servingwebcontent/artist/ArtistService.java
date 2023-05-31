@@ -1,5 +1,7 @@
 package com.example.servingwebcontent.artist;
 
+import com.example.servingwebcontent.genre.Genre;
+import com.example.servingwebcontent.genre.GenreRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,12 @@ public class ArtistService {
     private static final ModelMapper modelMapper = new ModelMapper();
 
     private ArtistRepository artistRepository;
+    private GenreRepository genreRepository;
+
+    @Autowired
+    public void setGenreRepository(GenreRepository genreRepository) {
+        this.genreRepository = genreRepository;
+    }
 
     @Autowired
     public void setArtistRepository(ArtistRepository artistRepository) {
@@ -40,7 +48,7 @@ public class ArtistService {
         List<ArtistDTO> result = new ArrayList<ArtistDTO>();
         for (Artist artist : allArtists)
         {
-            ArtistDTO artistDTO = new ArtistDTO(artist.getName(), artist.getGenre());
+            ArtistDTO artistDTO = new ArtistDTO(artist.getName(), artist.getGenre().getName());
             result.add(artistDTO);
         }
         return result;
@@ -62,17 +70,20 @@ public class ArtistService {
     {
         Artist artist = artistRepository.findById(id).get();
         artist.setName(artistDTO.getName());
-        artist.setGenre(artistDTO.getGenre());
+        artist.getGenre().setName(artistDTO.getName());
         artistRepository.save(artist);
         // TODO: update artistDTO in the database
 
     }
 
-    public int createArtist(ArtistDTO artistDTO)
+    public int createArtist(NewArtistDTO newArtistDTO)
     {
-        Artist artist = modelMapper.map(artistDTO, Artist.class);
+        int genreId = newArtistDTO.getGenreId();
+        Genre genre = genreRepository.findById(genreId).get();
+        Artist artist = new Artist();
+        artist.setName(newArtistDTO.getName());
+        artist.setGenre(genre);
+        return genreRepository.save(genre).getId();
         // TODO: save to database
-        Artist saved = artistRepository.save(artist);
-        return saved.getId();
     }
 }
