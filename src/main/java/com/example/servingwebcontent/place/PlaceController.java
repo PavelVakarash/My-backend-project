@@ -1,6 +1,5 @@
 package com.example.servingwebcontent.place;
 
-import com.example.servingwebcontent.genre.NewGenreDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

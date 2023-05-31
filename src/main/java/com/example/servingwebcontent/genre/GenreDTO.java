@@ -1,6 +1,5 @@
 package com.example.servingwebcontent.genre;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 @AllArgsConstructor

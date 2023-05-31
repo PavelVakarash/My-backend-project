@@ -1,7 +1,6 @@
 package com.example.servingwebcontent.genre;
 
 import com.example.servingwebcontent.artist.Artist;
-import com.example.servingwebcontent.event.Event;
 import jakarta.persistence.*;
 import lombok.*;
 
