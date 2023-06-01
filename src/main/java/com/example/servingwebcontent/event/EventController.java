@@ -63,7 +63,7 @@ public class EventController {
             @ApiResponse(responseCode = "200", description = "EventDTO successfully updated"),
             @ApiResponse(responseCode = "404", description = "EventDTO not found")
     })
-    public void updateEvent(@PathVariable int id, @RequestBody EventDTO eventDTO)
+    public void updateEvent(@PathVariable int id, @RequestBody NewEventDTO eventDTO)
     {
         // TODO: update eventDTO in database
         service.updateEvent(id, eventDTO);

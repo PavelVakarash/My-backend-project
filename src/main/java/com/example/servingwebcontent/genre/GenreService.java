@@ -16,16 +16,14 @@ public class GenreService {
         this.genreRepository = genreRepository;
     }
 
-    public GenreDTO getGenre(int id){
-        Genre genre = genreRepository.findById(id).get();
-        GenreDTO result = modelMapper.map(genre, GenreDTO.class);
-        return result;
-    }
-
     public int createGenre(NewGenreDTO newGenreDTO){
         Genre genre = modelMapper.map(newGenreDTO, Genre.class);
         return genreRepository.save(genre).getId();
         // TODO: save to database
-
+    }
+    public GenreDTO getGenre(int id){
+        Genre genre = genreRepository.findById(id).get();
+        GenreDTO result = modelMapper.map(genre, GenreDTO.class);
+        return result;
     }
 }

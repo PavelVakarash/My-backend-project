@@ -1,13 +1,17 @@
 package com.example.servingwebcontent.genre;
 
+import com.example.servingwebcontent.artist.ArtistDTO;
+import com.example.servingwebcontent.artist.ArtistService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("artists")
+@RequestMapping("genres")
 public class GenreController {
 
     private GenreService genreService;
@@ -15,6 +19,13 @@ public class GenreController {
     @Autowired
     public void setGenreService(GenreService genreService) {
         this.genreService = genreService;
+    }
+
+    private ArtistService artistsService;
+
+    @Autowired
+    public void setArtistService(ArtistService artistsService) {
+        this.artistsService = artistsService;
     }
 
     @GetMapping(value = "/{id}")
@@ -38,5 +49,10 @@ public class GenreController {
     {
         // TODO save to database
        return genreService.createGenre(newGenreDTO);
+    }
+
+    @GetMapping(value = "/{genreId}/artists")
+    public List<ArtistDTO> getArtistsByGenre(@PathVariable int genreId){
+        return artistsService.getArtistsByGenre(genreId);
     }
 }

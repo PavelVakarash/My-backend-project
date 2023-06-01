@@ -1,13 +1,16 @@
 package com.example.servingwebcontent.artist;
 
+import com.example.servingwebcontent.event.EventDTO;
 import com.example.servingwebcontent.genre.Genre;
 import com.example.servingwebcontent.genre.GenreRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ArtistService {
@@ -27,30 +30,11 @@ public class ArtistService {
         this.artistRepository = artistRepository;
     }
 
-    static final ArrayList<ArtistDTO> ARTIST_DTOS = new ArrayList<ArtistDTO>() {{
-        add(new ArtistDTO("Nazareth", "Rock"));
-        add(new ArtistDTO("Led Zeppelin", "Rock"));
-        add(new ArtistDTO("Louis Armstrong", "Jazz"));
-        add(new ArtistDTO("Frank Sinatra", "Jazz"));
-        add(new ArtistDTO("System of a Down", "Metal"));
-        add(new ArtistDTO("Metallica", "Metal"));
-        add(new ArtistDTO("DiDuLya", "Instrumental"));
-        add(new ArtistDTO("Pink Floyd", "Instrumental"));
-        add(new ArtistDTO("RadioHead", "Electronic"));
-        add(new ArtistDTO("Depeche Mode", "Electronic"));
-        add(new ArtistDTO("Enigma", "New Age"));
-        add(new ArtistDTO("Enya", "New Age"));
-    }};
 
     public List<ArtistDTO> getArtists(String genreFilter)
     {
-        Iterable<Artist> allArtists = artistRepository.findAll();
-        List<ArtistDTO> result = new ArrayList<ArtistDTO>();
-        for (Artist artist : allArtists)
-        {
-            ArtistDTO artistDTO = new ArtistDTO(artist.getName(), artist.getGenre().getName());
-            result.add(artistDTO);
-        }
+        List<Artist> allArtists = artistRepository.findAll();
+        List<ArtistDTO> result = modelMapper.map(allArtists, new TypeToken<List<ArtistDTO>>(){}.getType());
         return result;
     }
 
@@ -66,11 +50,13 @@ public class ArtistService {
         // TODO: remove it from the database
     }
 
-    public void updateArtist(int id, ArtistDTO artistDTO)
+    public void updateArtist(int id, NewArtistDTO artistDTO)
     {
-        Artist artist = artistRepository.findById(id).get();
+        Optional<Artist> artistOptional = artistRepository.findById(id);
+        Artist artist = artistOptional.get();
         artist.setName(artistDTO.getName());
-        artist.getGenre().setName(artistDTO.getName());
+        Genre genre = genreRepository.findById(artistDTO.getGenreId()).get();
+        artist.setGenre(genre);
         artistRepository.save(artist);
         // TODO: update artistDTO in the database
 
@@ -83,7 +69,14 @@ public class ArtistService {
         Artist artist = new Artist();
         artist.setName(newArtistDTO.getName());
         artist.setGenre(genre);
-        return genreRepository.save(genre).getId();
+        return artistRepository.save(artist).getId();
         // TODO: save to database
+    }
+
+    public List<ArtistDTO> getArtistsByGenre(int genreId){
+        Genre genre = genreRepository.findById(genreId).get();
+        List<Artist> artistsForGenre = genre.getArtists();
+        List<ArtistDTO> result = modelMapper.map(artistsForGenre, new TypeToken<List<ArtistDTO>>(){}.getType());
+        return result;
     }
 }

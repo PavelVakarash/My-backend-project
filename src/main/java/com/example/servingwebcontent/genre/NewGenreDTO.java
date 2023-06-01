@@ -10,6 +10,6 @@ import lombok.*;
 @ToString
 public class NewGenreDTO {
 
-    @Schema(description = "Name of the artist")
+    @Schema(description = "Name of the genre")
     private String name;
 }

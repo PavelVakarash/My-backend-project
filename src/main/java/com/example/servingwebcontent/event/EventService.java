@@ -3,11 +3,12 @@ package com.example.servingwebcontent.event;
 import com.example.servingwebcontent.place.Place;
 import com.example.servingwebcontent.place.PlaceRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EventService {
@@ -28,22 +29,12 @@ public class EventService {
         this.eventRepository = eventRepository;
     }
 
-    static final ArrayList<EventDTO> EVENT_DTOS = new ArrayList<EventDTO>() {{
-        add(new EventDTO("Opera", "London"));
-        add(new EventDTO("Violin concert", "Prague"));
-        add(new EventDTO("Jazz concert", "Berlin"));
-        add(new EventDTO("Art exhibition", "London"));
-    }};
-
         public List<EventDTO> getEvents(String cityFilter)
         {
-            Iterable<Event> allEvents = eventRepository.findAll();
-            List<EventDTO> result = new ArrayList<EventDTO>();
-            for (Event event : allEvents)
-            {
-                EventDTO eventDTO = new EventDTO(event.getName(), event.getPlace().getCity());
-                result.add(eventDTO);
-            }
+            //1. GET Entity
+            List<Event> allEvents = eventRepository.findAll();
+            //2. Move data to DTO
+            List<EventDTO> result = modelMapper.map(allEvents, new TypeToken<List<EventDTO>>(){}.getType());
             return result;
         }
 
@@ -59,13 +50,16 @@ public class EventService {
         // TODO: remove it from the database
     }
 
-    public void updateEvent(int id, EventDTO eventDTO)
+    public void updateEvent(int id, NewEventDTO eventDTO)
     {
-        Event event = eventRepository.findById(id).get();
-
+        // 1. Get from database
+        Optional<Event> eventOptional = eventRepository.findById(id);
+        Event event = eventOptional.get();
+        // 2. Update with new data
         event.setName(eventDTO.getName());
-        event.getPlace().setCity(eventDTO.getCity());
-
+        Place place = placeRepository.findById(eventDTO.getPlaceId()).get();
+        event.setPlace(place);
+        // 3. Save to database
         eventRepository.save(event);
         // TODO: update eventDTO in the database
     }
@@ -79,5 +73,12 @@ public class EventService {
         event.setName(newEventDTO.getName());
         event.setPlace(place);
         return eventRepository.save(event).getId();
+    }
+
+    public List<EventDTO> getEventsByPlace(int placeId){
+           Place place = placeRepository.findById(placeId).get();
+           List<Event> eventsForPlace = place.getEvents();
+           List<EventDTO> result = modelMapper.map(eventsForPlace, new TypeToken<List<EventDTO>>(){}.getType());
+           return result;
     }
 }

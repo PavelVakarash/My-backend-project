@@ -1,10 +1,14 @@
 package com.example.servingwebcontent.place;
 
+import com.example.servingwebcontent.event.EventDTO;
+import com.example.servingwebcontent.event.EventService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("places")
@@ -15,6 +19,13 @@ public class PlaceController {
     @Autowired
     public void setPlaceService(PlaceService placeService) {
         this.placeService = placeService;
+    }
+
+    private EventService eventsService;
+
+    @Autowired
+    public void setEventsService(EventService eventsService) {
+        this.eventsService = eventsService;
     }
 
     @PostMapping(value = "")
@@ -38,4 +49,11 @@ public class PlaceController {
     public PlaceDTO getPlace(@PathVariable int id){
         return placeService.getPlace(id);
     }
+
+    // GET /places/{placeId}/events - get all events for the place(with placeId) - Enpoint API
+    @GetMapping(value = "/{placeId}/events")
+    public List<EventDTO> getEventsByPlace(@PathVariable int placeId){
+       return eventsService.getEventsByPlace(placeId);
+    }
+
 }
