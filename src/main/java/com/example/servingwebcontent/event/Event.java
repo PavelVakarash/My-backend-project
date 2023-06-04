@@ -1,5 +1,6 @@
 package com.example.servingwebcontent.event;
 
+import com.example.servingwebcontent.artist.Artist;
 import com.example.servingwebcontent.place.Place;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,4 +25,7 @@ public class Event {
 
     @ManyToOne  // Owner
     private Place place; // place_id -> place.id
+
+    @ManyToOne
+    private Artist artist;
 }

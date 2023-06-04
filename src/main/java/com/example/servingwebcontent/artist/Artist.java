@@ -1,8 +1,11 @@
 package com.example.servingwebcontent.artist;
 
+import com.example.servingwebcontent.event.Event;
 import com.example.servingwebcontent.genre.Genre;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "artist")
@@ -22,4 +25,8 @@ public class Artist {
 //    private String genre;
     @ManyToOne
     private Genre genre;
+
+    @OneToMany(mappedBy = "artist")
+    private List<Event> events;
 }
+

@@ -11,6 +11,8 @@ import lombok.*;
 @ToString
 public class ArtistDTO {
 
+    private int id;
+
     @Schema(description = "Name of the artist")
     private String name;
 //    @Schema(description = "Genre of the artist")

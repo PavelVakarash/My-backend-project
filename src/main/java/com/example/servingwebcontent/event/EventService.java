@@ -1,5 +1,7 @@
 package com.example.servingwebcontent.event;
 
+import com.example.servingwebcontent.artist.Artist;
+import com.example.servingwebcontent.artist.ArtistRepository;
 import com.example.servingwebcontent.place.Place;
 import com.example.servingwebcontent.place.PlaceRepository;
 import org.modelmapper.ModelMapper;
@@ -18,6 +20,12 @@ public class EventService {
 
     private EventRepository eventRepository;
     private PlaceRepository placeRepository;
+    private ArtistRepository artistRepository;
+
+    @Autowired
+    public void setArtistRepository(ArtistRepository artistRepository) {
+        this.artistRepository = artistRepository;
+    }
 
     @Autowired
     public void setPlaceRepository(PlaceRepository placeRepository) {
@@ -59,6 +67,8 @@ public class EventService {
         event.setName(eventDTO.getName());
         Place place = placeRepository.findById(eventDTO.getPlaceId()).get();
         event.setPlace(place);
+        Artist artist = artistRepository.findById(eventDTO.getArtistId()).get();
+        event.setArtist(artist);
         // 3. Save to database
         eventRepository.save(event);
         // TODO: update eventDTO in the database
@@ -69,9 +79,12 @@ public class EventService {
         // TODO: save to database
         int placeId = newEventDTO.getPlaceId();
         Place place = placeRepository.findById(placeId).get();
+        int artistId = newEventDTO.getArtistId();
+        Artist artist = artistRepository.findById(artistId).get();
         Event event = new Event();
         event.setName(newEventDTO.getName());
         event.setPlace(place);
+        event.setArtist(artist);
         return eventRepository.save(event).getId();
     }
 

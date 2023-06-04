@@ -10,4 +10,5 @@ import lombok.*;
 public class NewEventDTO {
     private String name;
     private int placeId;
+    private int artistId;
 }
