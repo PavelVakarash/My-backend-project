@@ -23,9 +23,11 @@ public class Event {
 //    @NonNull
 //    private String city; // TODO: replace to place
 
+    @NonNull
     @ManyToOne  // Owner
     private Place place; // place_id -> place.id
 
     @ManyToOne
+    @JoinColumn(name = "artist_id", referencedColumnName = "id")
     private Artist artist;
 }

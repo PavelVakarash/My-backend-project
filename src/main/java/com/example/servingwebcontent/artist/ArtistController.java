@@ -1,5 +1,7 @@
 package com.example.servingwebcontent.artist;
 
+import com.example.servingwebcontent.event.EventDTO;
+import com.example.servingwebcontent.event.EventService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -13,6 +15,12 @@ import java.util.List;
 public class ArtistController {
 
     private ArtistService service;
+    private EventService eventsService;
+
+    @Autowired
+    public void setEventsService(EventService eventsService) {
+        this.eventsService = eventsService;
+    }
 
     @Autowired
     public void setService(ArtistService service) {
@@ -79,6 +87,11 @@ public class ArtistController {
     public int createArtist(@RequestBody NewArtistDTO newArtistDTO) {
         // TODO save to database
         return service.createArtist(newArtistDTO);
+    }
+
+    @GetMapping(value = "/{artistId}/events")
+    public List<EventDTO> getEventsByArtist(@PathVariable int artistId){
+        return eventsService.getEventsByArtist(artistId);
     }
 }
 

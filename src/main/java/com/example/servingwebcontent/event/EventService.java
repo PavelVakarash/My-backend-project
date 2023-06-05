@@ -94,4 +94,11 @@ public class EventService {
            List<EventDTO> result = modelMapper.map(eventsForPlace, new TypeToken<List<EventDTO>>(){}.getType());
            return result;
     }
+
+    public List<EventDTO> getEventsByArtist(int artistId){
+        Artist artist = artistRepository.findById(artistId).get();
+        List<Event> eventsForArtist = artist.getEvents();
+        List<EventDTO> result = modelMapper.map(eventsForArtist, new TypeToken<List<EventDTO>>(){}.getType());
+        return result;
+    }
 }
