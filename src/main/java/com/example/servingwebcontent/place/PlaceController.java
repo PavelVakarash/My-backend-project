@@ -1,5 +1,7 @@
 package com.example.servingwebcontent.place;
 
+import com.example.servingwebcontent.artist.ArtistDTO;
+import com.example.servingwebcontent.artist.ArtistService;
 import com.example.servingwebcontent.event.EventDTO;
 import com.example.servingwebcontent.event.EventService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +17,12 @@ import java.util.List;
 public class PlaceController {
 
     private PlaceService placeService;
+    private ArtistService artistService;
+
+    @Autowired
+    public void setArtistService(ArtistService artistService) {
+        this.artistService = artistService;
+    }
 
     @Autowired
     public void setPlaceService(PlaceService placeService) {
@@ -54,6 +62,12 @@ public class PlaceController {
     @GetMapping(value = "/{placeId}/events")
     public List<EventDTO> getEventsByPlace(@PathVariable int placeId){
        return eventsService.getEventsByPlace(placeId);
+    }
+
+    // Endpoint: places/{placeId}/artists
+    @GetMapping(value = "/{placeId}/artists")
+    public List<ArtistDTO> getArtistByPlaceId(@PathVariable int placeId){
+        return artistService.getArtistByPlaceId(placeId);
     }
 
 }

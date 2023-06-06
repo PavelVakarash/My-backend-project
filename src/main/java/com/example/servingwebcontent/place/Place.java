@@ -1,5 +1,6 @@
 package com.example.servingwebcontent.place;
 
+import com.example.servingwebcontent.artist.Artist;
 import com.example.servingwebcontent.event.Event;
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,4 +34,15 @@ public class Place {
 
     @OneToMany(mappedBy = "place")
     private List<Event> events;
+
+//    @ManyToMany
+//    @JoinTable(
+//            name = "event",
+//            joinColumns = @JoinColumn(name = "place_id"),
+//            inverseJoinColumns = @JoinColumn(name = "artist_id")
+//    )
+//    private List<Artist> artists;
+
+    @ManyToMany(mappedBy = "places")
+    private List<Artist> artists;
 }

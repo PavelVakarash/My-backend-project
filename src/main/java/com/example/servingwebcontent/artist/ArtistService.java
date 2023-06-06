@@ -3,6 +3,8 @@ package com.example.servingwebcontent.artist;
 import com.example.servingwebcontent.event.EventDTO;
 import com.example.servingwebcontent.genre.Genre;
 import com.example.servingwebcontent.genre.GenreRepository;
+import com.example.servingwebcontent.place.Place;
+import com.example.servingwebcontent.place.PlaceRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,12 @@ public class ArtistService {
 
     private ArtistRepository artistRepository;
     private GenreRepository genreRepository;
+    private PlaceRepository placeRepository;
+
+    @Autowired
+    public void setPlaceRepository(PlaceRepository placeRepository) {
+        this.placeRepository = placeRepository;
+    }
 
     @Autowired
     public void setGenreRepository(GenreRepository genreRepository) {
@@ -77,6 +85,13 @@ public class ArtistService {
         Genre genre = genreRepository.findById(genreId).get();
         List<Artist> artistsForGenre = genre.getArtists();
         List<ArtistDTO> result = modelMapper.map(artistsForGenre, new TypeToken<List<ArtistDTO>>(){}.getType());
+        return result;
+    }
+
+    public List<ArtistDTO> getArtistByPlaceId(int placeId){
+        Place place = placeRepository.findById(placeId).get();
+        List<Artist> artistsForPlace = place.getArtists();
+        List<ArtistDTO> result = modelMapper.map(artistsForPlace, new TypeToken<List<ArtistDTO>>(){}.getType());
         return result;
     }
 }

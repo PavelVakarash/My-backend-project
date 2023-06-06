@@ -2,6 +2,8 @@ package com.example.servingwebcontent.artist;
 
 import com.example.servingwebcontent.event.EventDTO;
 import com.example.servingwebcontent.event.EventService;
+import com.example.servingwebcontent.place.PlaceDTO;
+import com.example.servingwebcontent.place.PlaceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -16,6 +18,12 @@ public class ArtistController {
 
     private ArtistService service;
     private EventService eventsService;
+    private PlaceService placeService;
+
+    @Autowired
+    public void setPlaceService(PlaceService placeService) {
+        this.placeService = placeService;
+    }
 
     @Autowired
     public void setEventsService(EventService eventsService) {
@@ -92,6 +100,12 @@ public class ArtistController {
     @GetMapping(value = "/{artistId}/events")
     public List<EventDTO> getEventsByArtist(@PathVariable int artistId){
         return eventsService.getEventsByArtist(artistId);
+    }
+
+    // Endpoint: /artists/{id}/places)
+    @GetMapping(value = "/{artistId}/places")
+    public List<PlaceDTO> getPlaceByArtistId(@PathVariable int artistId){
+        return placeService.getPlaceByArtistId(artistId);
     }
 }
 
