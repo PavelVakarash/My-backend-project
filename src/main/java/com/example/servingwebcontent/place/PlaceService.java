@@ -42,7 +42,22 @@ public class PlaceService {
     public List<PlaceDTO> getPlaceByArtistId(int artistId){
         Artist artist = artistRepository.findById(artistId).get();
         List<Place> placesForArtist = artist.getPlaces();
-        List<PlaceDTO> result = modelMapper.map(placesForArtist, new TypeToken<List<ArtistDTO>>(){}.getType());
+        List<PlaceDTO> result = modelMapper.map(placesForArtist, new TypeToken<List<PlaceDTO>>(){}.getType());
         return result;
+    }
+
+    public List<PlaceDTO> getPlacesByCityName(String city){
+        List<Place> places = placeRepository.findByCity(city);
+        return modelMapper.map(places, new TypeToken<List<PlaceDTO>>(){}.getType());
+    }
+
+    public List<PlaceDTO> getPlacesByCityWithAddress(String city, String address){
+        List<Place> places = placeRepository.findByCityAndAddress(city, address);
+        return modelMapper.map(places, new TypeToken<List<PlaceDTO>>(){}.getType());
+    }
+
+    public List<PlaceDTO> getPlacesByCityOrAddress(String city, String address){
+        List<Place> places = placeRepository.findByCityOrAddress(city, address);
+        return modelMapper.map(places, new TypeToken<List<PlaceDTO>>(){}.getType());
     }
 }

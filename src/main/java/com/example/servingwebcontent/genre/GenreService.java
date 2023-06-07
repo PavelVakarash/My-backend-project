@@ -1,8 +1,12 @@
 package com.example.servingwebcontent.genre;
 
+import com.example.servingwebcontent.place.PlaceDTO;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class GenreService {
@@ -25,5 +29,10 @@ public class GenreService {
         Genre genre = genreRepository.findById(id).get();
         GenreDTO result = modelMapper.map(genre, GenreDTO.class);
         return result;
+    }
+
+    public List<GenreDTO> getGenresByName (String name){
+        List<Genre> genres = genreRepository.findByName(name);
+        return modelMapper.map(genres, new TypeToken<List<GenreDTO>>(){}.getType());
     }
 }

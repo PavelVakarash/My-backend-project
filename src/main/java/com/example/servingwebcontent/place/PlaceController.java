@@ -70,4 +70,19 @@ public class PlaceController {
         return artistService.getArtistByPlaceId(placeId);
     }
 
+    @GetMapping(value = "/by-city/{city}")
+    public List<PlaceDTO> getPlacesByCity(@PathVariable String city){
+        return placeService.getPlacesByCityName(city);
+    }
+
+    @GetMapping(value = "/by-city/{city}/address/{address}")
+    public List<PlaceDTO> getPlacesByCityWithAddress(@PathVariable String city,@PathVariable String address){
+        return placeService.getPlacesByCityWithAddress(city, address);
+    }
+
+    @GetMapping(value = "/by-city/{city}/or/address/{address}")
+    public List<PlaceDTO> getPlacesByCityOrAddress(@PathVariable String city,@PathVariable String address){
+        return placeService.getPlacesByCityOrAddress(city, address);
+    }
+
 }

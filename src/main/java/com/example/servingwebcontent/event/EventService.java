@@ -37,14 +37,27 @@ public class EventService {
         this.eventRepository = eventRepository;
     }
 
-        public List<EventDTO> getEvents(String cityFilter)
+    public List<EventDTO> getEvents(String cityFilter)
+    {
+
+        List<Event> allEvents;
+        if (cityFilter.equals("all"))
         {
-            //1. GET Entity
-            List<Event> allEvents = eventRepository.findAll();
-            //2. Move data to DTO
-            List<EventDTO> result = modelMapper.map(allEvents, new TypeToken<List<EventDTO>>(){}.getType());
-            return result;
+            allEvents = eventRepository.findAll();
         }
+        else {
+            allEvents = eventRepository.findFilteredByCity(cityFilter);
+        }
+
+        // 1. Get entity
+        //List<Event> allEvents = eventRepository.findAll(); // Get all events from database
+        // 2. Move data to DTOs
+        // map(1-st, 2-d)
+        // 1-s source - allEvents - list of entity
+        // 2-d type to convert - List<EventDTO>
+        List<EventDTO> result = modelMapper.map(allEvents, new TypeToken<List<EventDTO>>(){}.getType());
+        return result;
+    }
 
     public EventDTO getEvent(int id) {
         Event event = eventRepository.findById(id).get();

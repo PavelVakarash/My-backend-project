@@ -55,4 +55,9 @@ public class GenreController {
     public List<ArtistDTO> getArtistsByGenre(@PathVariable int genreId){
         return artistsService.getArtistsByGenre(genreId);
     }
+
+    @GetMapping(value = "/by-name/{name}")
+    public List<GenreDTO> getGenresByName(@PathVariable String name){
+        return genreService.getGenresByName(name);
+    }
 }

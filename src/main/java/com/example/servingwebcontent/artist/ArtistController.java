@@ -2,6 +2,8 @@ package com.example.servingwebcontent.artist;
 
 import com.example.servingwebcontent.event.EventDTO;
 import com.example.servingwebcontent.event.EventService;
+import com.example.servingwebcontent.genre.GenreDTO;
+import com.example.servingwebcontent.genre.GenreService;
 import com.example.servingwebcontent.place.PlaceDTO;
 import com.example.servingwebcontent.place.PlaceService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +21,12 @@ public class ArtistController {
     private ArtistService service;
     private EventService eventsService;
     private PlaceService placeService;
+    private GenreService genreService;
+
+    @Autowired
+    public void setGenreService(GenreService genreService) {
+        this.genreService = genreService;
+    }
 
     @Autowired
     public void setPlaceService(PlaceService placeService) {
@@ -106,6 +114,12 @@ public class ArtistController {
     @GetMapping(value = "/{artistId}/places")
     public List<PlaceDTO> getPlaceByArtistId(@PathVariable int artistId){
         return placeService.getPlaceByArtistId(artistId);
+    }
+
+    // endpoint api: GET artist/by-genre/{genre}
+    @GetMapping(value = "artist/by-genre/{name}")
+    public List<ArtistDTO> getArtistsByGenreName(@PathVariable String name){
+        return service.getArtistsByGenreName(name);
     }
 }
 

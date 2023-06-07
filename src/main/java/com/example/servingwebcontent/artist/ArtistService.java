@@ -4,6 +4,7 @@ import com.example.servingwebcontent.event.EventDTO;
 import com.example.servingwebcontent.genre.Genre;
 import com.example.servingwebcontent.genre.GenreRepository;
 import com.example.servingwebcontent.place.Place;
+import com.example.servingwebcontent.place.PlaceDTO;
 import com.example.servingwebcontent.place.PlaceRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -93,5 +94,10 @@ public class ArtistService {
         List<Artist> artistsForPlace = place.getArtists();
         List<ArtistDTO> result = modelMapper.map(artistsForPlace, new TypeToken<List<ArtistDTO>>(){}.getType());
         return result;
+    }
+
+    public List<ArtistDTO> getArtistsByGenreName(String name){
+        List<Artist> artists = artistRepository.findByGenreName(name);
+        return modelMapper.map(artists, new TypeToken<List<ArtistDTO>>(){}.getType());
     }
 }
