@@ -22,8 +22,6 @@ public class Artist {
     @NonNull
     private String name;
 
-//    @NonNull
-//    private String genre;
     @ManyToOne
     private Genre genre;
 

@@ -1,6 +1,5 @@
 package com.example.servingwebcontent.genre;
 
-import com.example.servingwebcontent.place.PlaceDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;

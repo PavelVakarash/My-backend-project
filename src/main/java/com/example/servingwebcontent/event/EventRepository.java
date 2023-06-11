@@ -12,4 +12,7 @@ import java.util.List;
 public interface EventRepository extends JpaRepository<Event, Integer> {
     @Query("SELECT e FROM Event e INNER JOIN e.place p WHERE p.city = :city")
     List<Event> findFilteredByCity(@Param("city") String city);
+
+    @Query("SELECT e FROM Event e INNER JOIN e.genre g WHERE g.name = :name")
+    List<Event> findByGenreName(@Param("name") String name);
 }

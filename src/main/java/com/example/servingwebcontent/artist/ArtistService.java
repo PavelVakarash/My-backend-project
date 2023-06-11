@@ -1,17 +1,14 @@
 package com.example.servingwebcontent.artist;
 
-import com.example.servingwebcontent.event.EventDTO;
 import com.example.servingwebcontent.genre.Genre;
 import com.example.servingwebcontent.genre.GenreRepository;
 import com.example.servingwebcontent.place.Place;
-import com.example.servingwebcontent.place.PlaceDTO;
 import com.example.servingwebcontent.place.PlaceRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

@@ -80,4 +80,9 @@ public class EventController {
         // TODO save to database
        return service.createEvent(newEventDTO);
     }
+
+    @GetMapping(value = "event/by-genre/{name}")
+    public List<EventDTO> getEventsByGenreName(@PathVariable String name){
+        return service.getEventsByGenreName(name);
+    }
 }

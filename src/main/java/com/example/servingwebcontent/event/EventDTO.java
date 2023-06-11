@@ -1,6 +1,7 @@
 package com.example.servingwebcontent.event;
 
 import com.example.servingwebcontent.artist.ArtistDTO;
+import com.example.servingwebcontent.genre.GenreDTO;
 import com.example.servingwebcontent.place.PlaceDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -18,5 +19,6 @@ public class EventDTO {
 //    private String city;
     private PlaceDTO place;
     private ArtistDTO artist;
+    private GenreDTO genre;
 
 }

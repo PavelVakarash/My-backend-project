@@ -1,6 +1,7 @@
 package com.example.servingwebcontent.genre;
 
 import com.example.servingwebcontent.artist.Artist;
+import com.example.servingwebcontent.event.Event;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,4 +24,7 @@ public class Genre {
 
     @OneToMany(mappedBy = "genre")
     private List<Artist> artists;
+
+    @OneToMany(mappedBy = "genre")
+    private List<Event> events;
 }
